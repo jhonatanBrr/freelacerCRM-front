@@ -8,6 +8,7 @@ import { ModalComponent } from '../../shared/modal/modal.component';
 import { DesignSystemModule } from '../../design-system/design-system.module';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { LoaderService } from '../../core/services/loader/loader.service';
 
 @Component({
   selector: 'app-clients',
@@ -23,7 +24,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './clients.component.scss'
 })
 export class ClientsComponent implements OnInit {
-  isLoading = signal(false);
   clients = signal<Client[]>([])
   isOpen = signal<boolean>(false);
   title = signal<string>('Agregar Cliente');
@@ -31,7 +31,8 @@ export class ClientsComponent implements OnInit {
 
   constructor(
     private clientsService: ClientsService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private loaderService: LoaderService
   ) {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
@@ -41,20 +42,27 @@ export class ClientsComponent implements OnInit {
       country: ['', Validators.required],
       notes: ['', Validators.required]
     });
+
+    this.loaderService.setTextLoader('Cargando clientes...');
   }
 
+  
+  ngOnInit(): void {
+    this.loadClients();
+  }
+  
   get getClients(): Client[] {
     return this.clients();
   }
 
-  ngOnInit(): void {
-    this.loadClients();
+  get isLoading(): boolean {
+    return this.loaderService.isLoadingValue;
   }
 
   loadClients(): void {
-    this.isLoading.set(true);
+    this.loaderService.setIsLoading(true);
     this.clientsService.getClients().pipe(
-      finalize(() => this.isLoading.set(false))
+      finalize(() => this.loaderService.setIsLoading(false))
     ).subscribe({
       next: (clients) => {
         this.clients.set(clients)

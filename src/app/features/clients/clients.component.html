@@ -13,7 +13,7 @@
             [title]="title()" 
             (close)="onClose()" 
             (submit)="onSubmit()"
-            [disabledActionButton]="isLoading() || form.invalid"
+            [disabledActionButton]="isLoading || form.invalid"
         >
             <form class="modal__form" [formGroup]="form">
                 <app-ds-input label="Nombre" type="text" formControlName="name" />

@@ -1,0 +1,89 @@
+@use '../../design-system/styles/tokens.scss' as *;
+
+.loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba($color-white, 0.95);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.3s ease;
+
+  &--visible {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.loader-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-lg;
+  text-align: center;
+}
+
+.loader-spinner {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.loader-circle {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background-color: $color-primary;
+  animation: loader-bounce 1.4s ease-in-out infinite both;
+
+  &:nth-child(1) {
+    animation-delay: -0.32s;
+  }
+
+  &:nth-child(2) {
+    animation-delay: -0.16s;
+  }
+
+  &:nth-child(3) {
+    animation-delay: 0s;
+  }
+}
+
+.loader-text {
+  font-family: $font-family;
+  font-size: $font-size-md;
+  font-weight: 500;
+  color: $color-text;
+  margin: 0;
+  letter-spacing: 0.025em;
+}
+
+// Animación de rebote para los círculos
+@keyframes loader-bounce {
+  0%, 80%, 100% {
+    transform: scale(0);
+    opacity: 0.5;
+  }
+  40% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 768px) {
+  .loader-circle {
+    width: 10px;
+    height: 10px;
+  }
+
+  .loader-text {
+    font-size: $font-size-sm;
+  }
+}
