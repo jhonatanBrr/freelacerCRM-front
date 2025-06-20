@@ -1,0 +1,31 @@
+<div class="register">
+    <header class="register__header">
+        <div class="register__branding">
+            <div class="register__logo">
+             
+            </div>
+            <h2 class="register__title">FreelancerCRM</h2>
+        </div>
+    </header>
+
+    <main class="register__main">
+        <div class="form">
+            <h2 class="form__title">Iniciar Sesión</h2>
+
+            <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="form__container">
+                <app-ds-input label="Usuario" type="text" formControlName="username"
+                    [errorMessage]="'El usuario es requerido'" />
+
+                <app-ds-input label="Contraseña" type="password" formControlName="password"
+                    [errorMessage]="'La contraseña es requerida'" />
+
+                <div class="form__actions">
+                    <app-ds-button label="Iniciar Sesión" variant="primary" type="submit" [disabled]="loginForm.invalid"
+                        (click)="onSubmit()" />
+                </div>
+            </form>
+
+            <p class="form__link">¿No tienes una cuenta? <a routerLink="/register">Regístrate</a></p>
+        </div>
+    </main>
+</div>

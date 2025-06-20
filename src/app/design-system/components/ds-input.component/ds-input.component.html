@@ -1,0 +1,21 @@
+<div class="ds-input" [class.ds-input--focused]="isFocused" [class.ds-input--has-value]="value" [class.ds-input--invalid]="hasError()">
+  <div class="ds-input__field-wrapper">
+    <input
+      class="ds-input__field"
+      [type]="type"
+      [disabled]="disabled"
+      [value]="value"
+      [placeholder]="label"
+      (focus)="isFocused = true"
+      (blur)="isFocused = false; onTouched()"
+      (input)="handleInput($event)"
+    />
+    <label class="ds-input__label">{{ label }}</label>
+  </div>
+  @if (hasError()) {
+    <div class="ds-input__error">
+      {{ errorMessage }}
+    </div>
+  }
+</div>
+  

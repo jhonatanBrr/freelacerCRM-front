@@ -1,0 +1,25 @@
+.header-container {
+    width: 100%;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1.5rem 0;
+    }
+
+    &__title {
+        margin: 0;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #1a202c;
+        line-height: 1.25;
+    }
+
+    &__content {
+        padding: 1.5rem 0;
+    }
+}

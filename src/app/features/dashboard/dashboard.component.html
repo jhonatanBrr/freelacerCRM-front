@@ -1,0 +1,212 @@
+<div class="layout-content-container dashboard">
+    <h1 class="layout-content-container__title">Dashboard</h1>
+    <app-tabs-sections [tabs]="tabs">
+    </app-tabs-sections>
+    @if (tabsService.activeTab === 'clients') {
+        <div class="fade-in">
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Client Overviews</h2>
+                @if (loading()['clients']) {
+                    <div class="loading-indicator">
+                        <p>Cargando datos de clientes...</p>
+                    </div>
+                } @else if (error()['clients']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['clients'] }}</p>
+                        <button (click)="refreshSection('clients')" class="retry-button">
+                            Reintentar
+                        </button>
+                    </div>
+                } @else {
+                    <div class="dashboard__grid-cards dashboard__grid-cards--3-cols">
+                        <app-counter-card 
+                            title="Total de clientes" 
+                            [number]="clientsSummary().total_clientes">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="Clientes activos" 
+                            [number]="clientsSummary().clientes_activos">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="Nuevos clientes" 
+                            [number]="clientsSummary().nuevos_ult_mes">
+                        </app-counter-card>
+                    </div>
+                }
+            </div>
+            
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Recent Clients</h2>
+                @if (loading()['clients']) {
+                    <div class="loading-indicator">
+                        <p>Cargando clientes recientes...</p>
+                    </div>
+                } @else if (error()['clients']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['clients'] }}</p>
+                    </div>
+                } @else {
+                    <app-table 
+                        [headerConfig]="columnsClients" 
+                        [data]="clientsSummary().ultimos_clientes">
+                    </app-table>
+                }
+            </div>
+        </div>
+    }
+    
+    @if (tabsService.activeTab === 'projects') {
+        <div class="fade-in">
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Project Summary</h2>
+                @if (loading()['projects']) {
+                    <div class="loading-indicator">
+                        <p>Cargando datos de proyectos...</p>
+                    </div>
+                } @else if (error()['projects']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['projects'] }}</p>
+                        <button (click)="refreshSection('projects')" class="retry-button">
+                            Reintentar
+                        </button>
+                    </div>
+                } @else {
+                    <div class="dashboard__grid-cards dashboard__grid-cards--3-cols">
+                        <app-counter-card 
+                            title="Proyectos activos" 
+                            [number]="projectsSummary().total_proyectos_activos">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="Por vencer" 
+                            [number]="projectsSummary().proyectos_proximos_vencer.length">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="Completados" 
+                            number="0">
+                        </app-counter-card>
+                    </div>
+                }
+            </div>
+            
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Active Projects</h2>
+                @if (loading()['projects']) {
+                    <div class="loading-indicator">
+                        <p>Cargando proyectos...</p>
+                    </div>
+                } @else if (error()['projects']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['projects'] }}</p>
+                    </div>
+                } @else {
+                    <app-table 
+                        [headerConfig]="columns" 
+                        [data]="rows">
+                    </app-table>
+                }
+            </div>
+        </div>
+    }
+    
+    @if (tabsService.activeTab === 'tasks') {
+        <div class="fade-in">
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Task Management</h2>
+                @if (loading()['tasks']) {
+                    <div class="loading-indicator">
+                        <p>Cargando datos de tareas...</p>
+                    </div>
+                } @else if (error()['tasks']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['tasks'] }}</p>
+                        <button (click)="refreshSection('tasks')" class="retry-button">
+                            Reintentar
+                        </button>
+                    </div>
+                } @else {
+                    <div class="dashboard__grid-cards dashboard__grid-cards--2-cols">
+                        <app-counter-card 
+                            title="Tareas pendientes" 
+                            [number]="pendingTasks().total_tareas_pendientes">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="En progreso" 
+                            number="0">
+                        </app-counter-card>
+                    </div>
+                }
+            </div>
+    
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Upcoming Tasks</h2>
+                @if (loading()['tasks']) {
+                    <div class="loading-indicator">
+                        <p>Cargando tareas...</p>
+                    </div>
+                } @else if (error()['tasks']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['tasks'] }}</p>
+                    </div>
+                } @else {
+                    <app-table 
+                        [headerConfig]="columns" 
+                        [data]="rows">
+                    </app-table>
+                }
+            </div>
+        </div>
+    }
+    
+    @if (tabsService.activeTab === 'invoicing') {
+        <div class="fade-in">
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Invoicing</h2>
+                @if (loading()['invoices']) {
+                    <div class="loading-indicator">
+                        <p>Cargando datos de facturación...</p>
+                    </div>
+                } @else if (error()['invoices']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['invoices'] }}</p>
+                        <button (click)="refreshSection('invoices')" class="retry-button">
+                            Reintentar
+                        </button>
+                    </div>
+                } @else {
+                    <div class="dashboard__grid-cards dashboard__grid-cards--3-cols">
+                        <app-counter-card 
+                            title="Facturas pendientes" 
+                            [number]="pendingInvoices().total_facturas_pendientes">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="Monto pendiente" 
+                            [number]="pendingInvoices().total_monto_pendiente">
+                        </app-counter-card>
+                        <app-counter-card 
+                            title="Cobrado este mes" 
+                            number="0">
+                        </app-counter-card>
+                    </div>
+                }
+            </div>
+    
+            <div class="layout-content-container__section">
+                <h2 class="layout-content-container__subtitle">Overdue Invoices</h2>
+                @if (loading()['invoices']) {
+                    <div class="loading-indicator">
+                        <p>Cargando facturas...</p>
+                    </div>
+                } @else if (error()['invoices']) {
+                    <div class="error-message">
+                        <p>Error: {{ error()['invoices'] }}</p>
+                    </div>
+                } @else {
+                    <app-table 
+                        [headerConfig]="columns" 
+                        [data]="rows">
+                    </app-table>
+                }
+            </div>
+        </div>
+    }
+</div>

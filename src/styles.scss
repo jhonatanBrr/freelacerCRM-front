@@ -1,1 +1,76 @@
-/* You can add global styles to this file, and also import other style files */
+// Normalizacion
+* {
+    box-sizing: border-box;
+    font-family: "Inter", sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+// Document
+html {
+    scroll-behavior: smooth;
+    height: 100%;
+    -webkit-text-size-adjust: 100%;
+}
+
+p {
+    margin: 0;
+}
+
+// Lists
+ul, ol {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+// Links
+a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+}
+
+button {
+    cursor: pointer;
+}
+
+// Layout
+.layout-content-container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 1.5rem clamp(1rem, 5%, 2rem);
+    box-sizing: border-box;
+
+    &__title {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+    }
+
+    &__subtitle {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+        font-weight: 500;
+    }
+
+    &__section {
+        margin-bottom: 2rem;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(5px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  

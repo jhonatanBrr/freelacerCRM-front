@@ -1,0 +1,13 @@
+<div class="tabs-sections">
+  <div class="tabs-sections__header">
+    @for (tab of tabs; track tab.id) {
+      <button
+        class="tabs-sections__tab"
+        [class.tabs-sections__tab--active]="isActiveTab(tab.id)"
+        (click)="setActiveTab(tab.id)"
+      >
+        {{ tab.label }}
+      </button>
+    }
+  </div>
+</div>

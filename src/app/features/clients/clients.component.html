@@ -1,0 +1,28 @@
+<div class="layout-content-container fade-in">
+    <app-header-container 
+        title="Clientes" 
+        buttonText="Agregar Cliente" 
+        buttonVariant="primary"
+        (buttonClick)="onAddUser()"
+    >
+        <app-table [headerConfig]="columns" [data]="getClients"></app-table>
+    </app-header-container>
+    @if (isOpen()) {
+        <app-modal 
+            [isOpen]="isOpen()" 
+            [title]="title()" 
+            (close)="onClose()" 
+            (submit)="onSubmit()"
+            [disabledActionButton]="isLoading() || form.invalid"
+        >
+            <form class="modal__form" [formGroup]="form">
+                <app-ds-input label="Nombre" type="text" formControlName="name" />
+                <app-ds-input label="Empresa" type="text" formControlName="company" />
+                <app-ds-input label="Email" type="email" formControlName="email" />
+                <app-ds-input label="Teléfono" type="text" formControlName="phone" />
+                <app-ds-input label="País" type="text" formControlName="country" />
+                <app-ds-input label="Notas" type="text" formControlName="notes" />
+            </form>
+        </app-modal>
+    }
+</div>

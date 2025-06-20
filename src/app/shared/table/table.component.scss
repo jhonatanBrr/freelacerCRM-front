@@ -1,0 +1,233 @@
+@use '../../design-system/styles/tokens.scss' as *;
+
+.table {
+  width: 100%;
+
+  // Vista de escritorio
+  &__desktop {
+    display: block;
+    
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  // Vista móvil
+  &__mobile {
+    display: none;
+    
+    @media (max-width: 768px) {
+      display: block;
+    }
+  }
+
+  &__container {
+    overflow-x: auto;
+    overflow-y: hidden;
+    border: 1px solid #dbe0e6;
+    border-radius: $default-radius;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    
+    // Scrollbar personalizado
+    &::-webkit-scrollbar {
+      height: 8px;
+    }
+    
+    &::-webkit-scrollbar-track {
+      background: #f1f5f9;
+      border-radius: 4px;
+    }
+    
+    &::-webkit-scrollbar-thumb {
+      background: #cbd5e1;
+      border-radius: 4px;
+      
+      &:hover {
+        background: #94a3b8;
+      }
+    }
+  }
+
+  &__element {
+    width: 100%;
+    min-width: 600px;
+    border-collapse: collapse;
+    white-space: nowrap;
+  }
+
+  &__head {
+    background-color: #f8fafc;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+
+  &__row {
+    &--body {
+      border-top: 1px solid #dbe0e6;
+      transition: background-color 0.2s ease;
+
+      &:hover {
+        background-color: #f8fafc;
+      }
+    }
+  }
+
+  &__header,
+  &__cell {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    font-size: 0.875rem;
+    color: #111418;
+    font-weight: 400;
+    white-space: nowrap; // Evita que el texto se rompa
+    overflow: hidden;
+    text-overflow: ellipsis; // Muestra "..." cuando el texto es muy largo
+    max-width: 200px; // Ancho máximo para cada celda
+  }
+
+  &__header {
+    font-weight: 600;
+    color: #374151;
+    border-bottom: 2px solid #e5e7eb;
+    background-color: #f8fafc;
+    
+    &--actions {
+      text-align: center;
+      width: 100px;
+      min-width: 100px; // Ancho mínimo fijo
+    }
+  }
+
+  &__cell {
+    &--actions {
+      color: #60758a;
+      font-weight: 500;
+      text-align: center;
+      width: 100px;
+      min-width: 100px; // Ancho mínimo fijo
+    }
+  }
+
+  &__action {
+    background: none;
+    border: none;
+    color: #2563eb;
+    cursor: pointer;
+    text-decoration: underline;
+    font-weight: 500;
+    padding: 0.25rem 0.5rem;
+    border-radius: 0.25rem;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+
+    &:hover {
+      background-color: #eff6ff;
+      text-decoration: none;
+    }
+  }
+
+  // Estilos para las cards móviles
+  &__card {
+    background: #ffffff;
+    border: 1px solid #dbe0e6;
+    border-radius: 0.5rem;
+    padding: 1rem;
+    margin-bottom: 0.75rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s ease;
+
+    &:hover {
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      transform: translateY(-1px);
+    }
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  &__card-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #f1f5f9;
+
+    &:last-of-type {
+      border-bottom: none;
+    }
+  }
+
+  &__card-label {
+    font-weight: 600;
+    color: #374151;
+    font-size: 0.875rem;
+    min-width: 80px;
+  }
+
+  &__card-value {
+    color: #111418;
+    font-size: 0.875rem;
+    text-align: right;
+    word-break: break-word;
+    max-width: 60%;
+  }
+
+  &__card-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 0.75rem;
+    margin-top: 0.75rem;
+    border-top: 1px solid #f1f5f9;
+  }
+
+  // Responsive adicional para tablets
+  @media (max-width: 1024px) and (min-width: 769px) {
+    &__header,
+    &__cell {
+      padding: 0.5rem 0.75rem;
+      font-size: 0.8rem;
+    }
+    
+    &__element {
+      min-width: 500px; // Ancho mínimo reducido para tablets
+    }
+  }
+
+  // Mejoras para pantallas muy pequeñas
+  @media (max-width: 480px) {
+    &__card {
+      padding: 0.75rem;
+    }
+
+    &__card-item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.25rem;
+    }
+
+    &__card-label {
+      min-width: auto;
+      font-size: 0.8rem;
+    }
+
+    &__card-value {
+      max-width: 100%;
+      text-align: left;
+      font-size: 0.8rem;
+    }
+  }
+}
+
+// Animación para el indicador de scroll
+@keyframes pulse {
+  0%, 100% {
+    opacity: 0.7;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+  

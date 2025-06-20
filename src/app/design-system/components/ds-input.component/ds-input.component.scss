@@ -1,0 +1,97 @@
+@use "../../styles/tokens" as *;
+
+.ds-input {
+    position: relative;
+    width: 100%;
+    font-family: $font-family;
+    margin-bottom: $spacing-xs;
+    min-height: 58px;
+
+    &__field-wrapper {
+        position: relative;
+    }
+
+    &__field {
+        width: 100%;
+        height: 40px;
+        padding: 0 $spacing-md;
+        font-size: $font-size-md;
+        font-family: inherit;
+        color: $color-black;
+        background: $color-white;
+        border: 1px solid $color-border;
+        border-radius: 8px;
+        transition: all 0.2s ease;
+        box-sizing: border-box;
+        outline: none;
+
+        &::placeholder {
+            color: transparent;
+        }
+
+        &:focus {
+            border-color: $color-primary;
+        }
+
+        &:disabled {
+            background: $color-disabled;
+            color: $color-text-secondary;
+            cursor: not-allowed;
+        }
+    }
+
+    &__label {
+        position: absolute;
+        left: $spacing-lg;
+        top: 50%;
+        transform: translateY(-50%);
+        font-size: $font-size-md;
+        color: #64748b;
+        background: transparent;
+        padding: 0 $spacing-xs;
+        transition: all 0.2s ease;
+        pointer-events: none;
+        white-space: nowrap;
+    }
+
+    // Estados del label
+    &--focused &__label,
+    &--has-value &__label {
+        top: 0;
+        left: $spacing-md;
+        font-size: $font-size-sm;
+        color: $color-primary;
+        background: $color-white;
+        padding: 0 $spacing-sm;
+        transform: translateY(-50%) scale(0.9);
+    }
+
+    &--has-value:not(.ds-input--focused) &__label {
+        color: #374151;
+    }
+
+    // Estado de error
+    &--invalid &__field {
+        border-color: #ef4444;
+        background: #fef2f2;
+
+        &:focus {
+            border-color: #ef4444;
+        }
+    }
+
+    &--invalid &__label {
+        color: #ef4444;
+    }
+
+    &__error {
+        display: flex;
+        align-items: center;
+        gap: $spacing-xs;
+        margin-top: $spacing-xs;
+        color: $color-error;
+        font-size: $font-size-xs;
+        font-weight: 500;
+    }
+}
+

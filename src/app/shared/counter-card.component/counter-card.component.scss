@@ -1,0 +1,20 @@
+.counter-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid #dbe0e6;
+    border-radius: 0.5rem;
+    padding: 18px;
+
+    &__subtitle {
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: #111418;
+    }
+
+    &__number {
+        font-size: 1rem;
+        color: #111418;
+        font-weight: 500;
+    }
+}

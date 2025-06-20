@@ -1,0 +1,82 @@
+@use '../../design-system/styles/tokens.scss' as *;
+
+.register {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    font-family: "Inter", "Noto Sans", sans-serif;
+    background-color: #ffffff;
+
+    &__header {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 1rem 2rem;
+        border-bottom: 1px solid #f0f2f5;
+    }
+
+    &__branding {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        color: #111418;
+    }
+
+    &__logo {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    &__main {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+    }
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-md;
+    min-width: 400px;
+    border-radius: $default-radius;
+    padding: $spacing-lg;
+    background-color: $color-white;
+    box-shadow: $default-shadow;
+
+    @media (max-width: 768px) {
+        min-width: 80%;
+    }
+
+    &__title {
+        font-size: $font-size-lg;
+        color: $color-text;
+        margin-bottom: $spacing-md;
+    }
+
+    &__container {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-md;
+    }
+
+    &__actions {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: $spacing-sm;
+    }
+
+    &__link {
+        text-align: center;
+        margin-top: $spacing-md;
+        color: $color-text;
+        font-size: $font-size-sm;
+
+        a {
+            color: #1379ff;
+        }
+    }
+}

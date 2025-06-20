@@ -1,0 +1,15 @@
+<div class="header-container">
+    <div class="header-container__header">
+        <h2 class="header-container__title">{{ title }}</h2>
+        <app-ds-button 
+            [label]="buttonText" 
+            variant="primary" 
+            [disabled]="disabled" 
+            (click)="onButtonClick()"
+        ></app-ds-button>
+    </div>
+
+    <div class="header-container__content">
+        <ng-content></ng-content>
+    </div>
+</div>
