@@ -2,48 +2,68 @@
     <!-- Vista de escritorio -->
     <div class="table__desktop">
         <div class="table__container">
-            <table class="table__element">
-                <thead class="table__head">
-                    <tr class="table__row">
-                        @for (col of headerConfig; track $index) {
-                            <th class="table__header">
-                                {{ col.label }}
-                            </th>
-                        }
-                        <th class="table__header table__header--actions">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody class="table__body">
-                    @for (row of data; track $index) {
-                        <tr class="table__row table__row--body">
+            @if (data && data.length > 0) {
+                <table class="table__element">
+                    <thead class="table__head">
+                        <tr class="table__row">
                             @for (col of headerConfig; track $index) {
-                                <td class="table__cell">
-                                    {{ getValue(row, col.path) }}
-                                </td>
+                                <th class="table__header">
+                                    {{ col.label }}
+                                </th>
                             }
-                            <td class="table__cell table__cell--actions">
-                                <button class="table__action">Editar</button>
-                            </td>
+                            <th class="table__header table__header--actions">Acciones</th>
                         </tr>
-                    }
-                </tbody>
-            </table>
+                    </thead>
+                    <tbody class="table__body">
+                        @for (row of data; track $index) {
+                            <tr class="table__row table__row--body">
+                                @for (col of headerConfig; track $index) {
+                                    <td class="table__cell">
+                                        {{ getValue(row, col.path) }}
+                                    </td>
+                                }
+                                <td class="table__cell table__cell--actions">
+                                    <button class="table__action">Editar</button>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            } @else {
+                <div class="table__empty">
+                    <div class="table__empty-icon">
+                        <fa-icon [icon]="['fas', 'inbox']"></fa-icon>
+                    </div>
+                    <h3 class="table__empty-title">No hay datos disponibles</h3>
+                    <p class="table__empty-message">No se encontraron registros para mostrar en este momento.</p>
+                </div>
+            }
         </div>
     </div>
 
     <!-- Vista móvil -->
     <div class="table__mobile">
-        @for (row of data; track $index) {
-            <div class="table__card">
-                @for (col of headerConfig; track $index) {
-                    <div class="table__card-item">
-                        <span class="table__card-label">{{ col.label }}:</span>
-                        <span class="table__card-value">{{ getValue(row, col.path) }}</span>
+        @if (data && data.length > 0) {
+            @for (row of data; track $index) {
+                <div class="table__card">
+                    @for (col of headerConfig; track $index) {
+                        <div class="table__card-item">
+                            <span class="table__card-label">{{ col.label }}:</span>
+                            <span class="table__card-value">{{ getValue(row, col.path) }}</span>
+                        </div>
+                    }
+                    <div class="table__card-actions">
+                        <button class="table__action">Editar</button>
                     </div>
-                }
-                <div class="table__card-actions">
-                    <button class="table__action">Editar</button>
                 </div>
+            }
+        } @else {
+            <div class="table__empty table__empty--mobile">
+                <div class="table__empty-icon">
+                    <fa-icon [icon]="['fas', 'inbox']"></fa-icon>
+                </div>
+                <h3 class="table__empty-title">No hay datos disponibles</h3>
+                <p class="table__empty-message">No se encontraron registros para mostrar en este momento.</p>
             </div>
         }
     </div>

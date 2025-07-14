@@ -23,6 +23,13 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>
   // PASO 1: Obtener el token actual
   const token = auth.getToken();
 
+  // esta peticion la excluyo porque al estar invalido el refresh token obtendre un 401
+  // al intentar refrescar el token, lo cual volvera a ejecutar la logica de refresh de mi interceptor
+  // que nuevamente al solicitar el token generara otro 401, generando un bucle infinito
+  if (request.url.includes('token/refresh/')) {
+    return next(request); 
+  }
+
   // PASO 2: Si hay token, agregarlo al header de autorización
   if (token) {
     request = request.clone({
@@ -35,6 +42,8 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>
   // PASO 3: Enviar la petición y manejar errores
   return next(request).pipe(
     catchError((error: HttpErrorResponse) => {
+      console.log(error);
+      
       // Solo manejar errores 401 (Unauthorized)
       if (error.status === 401) {
         console.log('Error 401 detectado, intentando refresh token...');
@@ -47,7 +56,9 @@ export const authInterceptor: HttpInterceptorFn = (request: HttpRequest<unknown>
           
           // PASO 5: Intentar refresh del token
           return auth.refreshToken().pipe(
-            switchMap(() => {
+            switchMap((response) => {
+              console.log(response);
+              
               // PASO 6: Si el refresh es exitoso, obtener el nuevo token
               const newToken = auth.getToken();
               if (newToken) {

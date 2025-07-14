@@ -1,4 +1,4 @@
-import { Component, OnInit, signal } from '@angular/core';
+import { Component, OnInit, signal, effect } from '@angular/core';
 import { TableComponent } from '../../shared/table/table.component';
 import { HeaderContainerComponent } from '../../shared/header-container/header-container.component';
 import { ClientsService } from '../../core/services/clients/clients.service';
@@ -29,6 +29,9 @@ export class ClientsComponent implements OnInit {
   title = signal<string>('Agregar Cliente');
   form: FormGroup;
 
+  page = signal<number>(1)
+  totalRecords = signal<number>(0)
+
   constructor(
     private clientsService: ClientsService,
     private formBuilder: FormBuilder,
@@ -44,33 +47,45 @@ export class ClientsComponent implements OnInit {
     });
 
     this.loaderService.setTextLoader('Cargando clientes...');
+
+    effect(() => {
+      const currentPage = this.page();
+      this.loadClients(currentPage);
+    });
   }
 
-  
   ngOnInit(): void {
-    this.loadClients();
+    this.loadClients(this.page());
   }
-  
+
   get getClients(): Client[] {
     return this.clients();
+  }
+
+  get totalClients(): number {
+    return this.totalRecords()
   }
 
   get isLoading(): boolean {
     return this.loaderService.isLoadingValue;
   }
 
-  loadClients(): void {
+  loadClients(page: number): void {
     this.loaderService.setIsLoading(true);
-    this.clientsService.getClients().pipe(
-      finalize(() => this.loaderService.setIsLoading(false))
+    this.clientsService.getClients(page).pipe(
+      finalize(() => {
+        this.loaderService.setIsLoading(false)
+      })
     ).subscribe({
       next: (clients) => {
-        this.clients.set(clients)
+        this.clients.set(clients.results)
+        this.totalRecords.set(clients.count)
       },
       error: (error) => {
         console.error('Error al cargar los clientes', error)
       }
     })
+
   }
 
   columns = [
@@ -87,7 +102,6 @@ export class ClientsComponent implements OnInit {
   ];
 
   onAddUser(): void {
-    console.log('onAddUser')
     this.isOpen.set(true)
   }
 
@@ -101,7 +115,7 @@ export class ClientsComponent implements OnInit {
       return;
     }
 
-    this.clientsService.createClient({...this.form.value }).subscribe({
+    this.clientsService.createClient({ ...this.form.value }).subscribe({
       next: (client) => {
         console.log('client', client)
       },

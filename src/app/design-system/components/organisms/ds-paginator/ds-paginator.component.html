@@ -1,0 +1,29 @@
+<div class="paginator">
+    <div class="paginator__back-arrow" 
+         [class.paginator__arrow--disabled]="!canGoBack()"
+         (click)="canGoBack() && backPage()">
+        <fa-icon [icon]="['fas', 'arrow-left']"></fa-icon>
+    </div>
+    
+    <div class="paginator__items-list">
+        @for (pageNum of visiblePages(); track $index) {
+            @if (isEllipsis(pageNum)) {
+                <div class="paginator__ellipsis">
+                    {{ pageNum }}
+                </div>
+            } @else {
+                <div class="paginator__item" 
+                     [class.paginator__item--selected]="isSelected(pageNum)" 
+                     (click)="handleSelect(pageNum)">
+                    {{ pageNum }}
+                </div>
+            }
+        }
+    </div>
+    
+    <div class="paginator__next-arrow" 
+         [class.paginator__arrow--disabled]="!canGoNext()"
+         (click)="canGoNext() && nextPage()">
+        <fa-icon [icon]="['fas', 'arrow-right']"></fa-icon>
+    </div>
+</div>

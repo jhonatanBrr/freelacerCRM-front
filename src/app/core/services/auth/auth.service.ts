@@ -129,39 +129,33 @@ export class AuthService {
    * @returns Observable con el nuevo token de acceso
    */
   refreshToken(): Observable<AuthResponse> {
-    // PASO 1: Verificar que existe un refresh token
     const refreshToken = this.getRefreshToken();
     if (!refreshToken) {
       return throwError(() => new Error('No refresh token available'));
     }
 
-    // PASO 2: Si ya hay un refresh en progreso, esperar a que termine
     if (this.isRefreshing) {
       console.log('Refresh ya en progreso, esperando...');
       
       return new Observable(observer => {
-        // Se suscribe al BehaviorSubject para esperar el resultado del refresh en progreso
         const subscription = this.refreshTokenSubject.subscribe({
           next: (token) => {
             if (token) {
-              // El refresh fue exitoso, emitir el nuevo token
               console.log('Refresh completado, recibiendo nuevo token');
               observer.next({ access: token, refresh: '' });
               observer.complete();
-              subscription.unsubscribe(); // Limpiar suscripción
+              subscription.unsubscribe();
             }
           },
           error: (error) => {
-            // El refresh falló, propagar el error
             console.log('Refresh falló, propagando error');
             observer.error(error);
-            subscription.unsubscribe(); // Limpiar suscripción
+            subscription.unsubscribe();
           }
         });
       });
     }
 
-    // PASO 3: Iniciar nuevo refresh
     console.log('Iniciando nuevo refresh...');
     this.isRefreshing = true;
 
@@ -169,23 +163,18 @@ export class AuthService {
       refresh: refreshToken
     }).pipe(
       tap(response => {
-        // PASO 4: Refresh exitoso
         console.log('Refresh exitoso, guardando nuevo token');
+        console.log(response);
         
         if (isPlatformBrowser(this.platformId)) {
-          // Guardar el nuevo token
           this.setTokens(response.access, response.refresh);
-          // Notificar a todos los que estaban esperando
           this.refreshTokenSubject.next(response.access);
         }
         this.isRefreshing = false;
       }),
       catchError((error) => {
-        // PASO 5: Refresh falló
         console.error('Refresh token failed:', error);
-        
         this.isRefreshing = false;
-        // Notificar a todos los que estaban esperando que falló
         this.refreshTokenSubject.next(null);
         this.logout();
         return throwError(() => error);

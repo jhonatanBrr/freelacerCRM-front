@@ -6,6 +6,7 @@
         (buttonClick)="onAddUser()"
     >
         <app-table [headerConfig]="columns" [data]="getClients"></app-table>
+        <app-ds-paginator [totalItems]="totalRecords" [page]="page"></app-ds-paginator>
     </app-header-container>
     @if (isOpen()) {
         <app-modal 
